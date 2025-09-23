@@ -22,6 +22,29 @@ fn print_board(board: &Board) {
     }
 }
 
+fn get_player_move(current_player: char, board: &Board) -> (usize, usize) {
+    
+}
+
+fn play_game() {
+    let mut board = initialize_board();
+    let mut current_player = PLAYER_X;
+
+    loop {
+        println!("Current board:");
+        print_board(&board);
+
+        let (row, col) = get_player_move(current_player, &board);
+        board[row][col] = current_player;
+
+        current_player = if current_player == PLAYER_X {
+            PLAYER_O
+        } else {
+            PLAYER_X
+        };
+    }
+}
+
 fn main() {
     println!("Welcome to Tic-Tac-Toe Game!");
 }
