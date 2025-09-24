@@ -23,7 +23,30 @@ fn print_board(board: &Board) {
 }
 
 fn get_player_move(current_player: char, board: &Board) -> (usize, usize) {
-    
+    loop {
+        println!(
+            "Player {}, enter your move (row and column): ",
+            current_player
+        );
+        let mut input = String::new();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
+
+        let coordinates: Vec<usize> = input
+            .trim()
+            .split_whitespace()
+            .flat_map(str::parse::<usize>)
+            .collect();
+        if coordinates.len() == 2 {
+            let (row, col) = (coordinates[0], coordinates[1]);
+            if row < BOARD_SIZE && col < BOARD_SIZE && board[row][col] == ' ' {
+                return (row, col);
+            }
+        }
+
+        println!("Invalid move. Try again.");
+    }
 }
 
 fn play_game() {
@@ -37,6 +60,12 @@ fn play_game() {
         let (row, col) = get_player_move(current_player, &board);
         board[row][col] = current_player;
 
+        if check_winner(&board, current_player) {
+            println!("Player {} wins!", current_player);
+            print_board(&board);
+            break;
+        }
+
         current_player = if current_player == PLAYER_X {
             PLAYER_O
         } else {
@@ -47,4 +76,6 @@ fn play_game() {
 
 fn main() {
     println!("Welcome to Tic-Tac-Toe Game!");
+    play_game();
+
 }
