@@ -69,7 +69,9 @@ fn check_winner(board: &Board, player: char) -> bool {
     false
 }
 
-
+fn check_draw(board: &Board) -> bool {
+    board.iter().all(|row| row.iter().all(|&cell| cell != ' '))
+}
 
 fn play_game() {
     let mut board = initialize_board();
@@ -84,6 +86,12 @@ fn play_game() {
 
         if check_winner(&board, current_player) {
             println!("Player {} wins!", current_player);
+            print_board(&board);
+            break;
+        }
+        
+        if check_draw(&board) {
+            println!("The game is a draw!");
             print_board(&board);
             break;
         }
