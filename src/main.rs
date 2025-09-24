@@ -49,6 +49,28 @@ fn get_player_move(current_player: char, board: &Board) -> (usize, usize) {
     }
 }
 
+fn check_winner(board: &Board, player: char) -> bool {
+    for row in 0..BOARD_SIZE {
+        if board[row].iter().all(|&cell| cell == player) {
+            return true;
+        }
+    }
+    for col in 0..BOARD_SIZE {
+        if (0..BOARD_SIZE).all(|row| board[row][col] == player) {
+            return true;
+        }
+    }
+    if (0..BOARD_SIZE).all(|i| board[i][i] == player) {
+        return true;
+    }
+    if (0..BOARD_SIZE).all(|i| board[i][BOARD_SIZE - 1 - i] == player) {
+        return true;
+    }
+    false
+}
+
+
+
 fn play_game() {
     let mut board = initialize_board();
     let mut current_player = PLAYER_X;
